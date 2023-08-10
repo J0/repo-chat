@@ -1,4 +1,5 @@
 import os
+import vecs
 from dotenv import load_dotenv
 from supabase.client import Client, create_client
 from langchain import LLMChain
@@ -14,21 +15,27 @@ from langchain.schema import (
 from langchain.chat_models import ChatOpenAI
 from langchain.callbacks.base import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
+from vecs.adapter import Adapter, ParagraphChunker, TextEmbedding
 
 load_dotenv()
 
 supabase_url = os.environ.get("SUPABASE_URL")
 supabase_key = os.environ.get("SUPABASE_SERVICE_KEY")
 supabase: Client = create_client(supabase_url, supabase_key)
-
-embeddings = OpenAIEmbeddings()
-
-vector_store = SupabaseVectorStore(
-    supabase, 
-    embeddings, 
-    table_name=os.environ.get("TABLE_NAME"),
-    query_name="repo_chat_search"
+DB_CONNECTION = os.environ.get("DB_CONNECTION")
+TABLE_NAME = os.environ.get("TABLE_NAME")
+vx = vecs.create_client(DB_CONNECTION)
+docs = vx.get_or_create_collection(
+    name=TABLE_NAME,
+    # here comes the new part
+    adapter=Adapter(
+        [
+            ParagraphChunker(skip_during_query=True),
+            TextEmbedding(model='Supabase/gte-small'),
+        ]
+    )
 )
+docs.create_index()
 
 while True:
     query = input("\033[34mWhat question do you have about your repo?\n\033[0m")
@@ -37,7 +44,8 @@ while True:
         print("\033[31mGoodbye!\n\033[0m")
         break
 
-    matched_docs = vector_store.similarity_search(query)
+    matched_docs = docs.query(data=query)
+    import pdb;pdb.set_trace()
     code_str = ""
 
     for doc in matched_docs:
