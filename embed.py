@@ -5,7 +5,7 @@ from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.document_loaders import TextLoader
 import vecs
-from vecs.adapter import Adapter, ParagraphChunker, TextEmbedding
+from vecs.adapter import Adapter, TextEmbedding
 
 load_dotenv()
 
@@ -46,7 +46,6 @@ repo_collection = vx.get_or_create_collection(
     # here comes the new part
     adapter=Adapter(
         [
-            ParagraphChunker(skip_during_query=True),
             TextEmbedding(model='Supabase/gte-small'),
         ]
     )
@@ -58,4 +57,4 @@ for doc in docs:
     repo_collection.upsert(records=[(
      f"{hash(doc.page_content)}",
      doc.page_content,
-     doc.metadata)])
+     {"body": doc.page_content, "file": doc.metadata})])

@@ -44,12 +44,11 @@ while True:
         print("\033[31mGoodbye!\n\033[0m")
         break
 
-    matched_docs = docs.query(data=query)
-    import pdb;pdb.set_trace()
+    matched_docs = docs.query(data=query, include_metadata=True, limit=7)
     code_str = ""
 
-    for doc in matched_docs:
-        code_str += doc.page_content + "\n\n"
+    for id, metadata in matched_docs:
+        code_str += metadata["body"]+ "\n\n"
         
     print("\n\033[35m" + code_str + "\n\033[32m")
 
