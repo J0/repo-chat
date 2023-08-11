@@ -39,7 +39,6 @@ for dirpath, dirnames, filenames in os.walk('repo'):
 text_splitter = CharacterTextSplitter(chunk_size=2000, chunk_overlap=200)
 docs = text_splitter.split_documents(documents)
 # create vector store client
-print(DB_CONNECTION)
 vx = vecs.create_client(DB_CONNECTION)
 repo_collection = vx.get_or_create_collection(
     name=TABLE_NAME,
