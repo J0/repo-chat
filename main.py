@@ -17,9 +17,6 @@ from vecs.adapter import Adapter, ParagraphChunker, TextEmbedding
 
 load_dotenv()
 
-supabase_url = os.environ.get("SUPABASE_URL")
-supabase_key = os.environ.get("SUPABASE_SERVICE_KEY")
-supabase: Client = create_client(supabase_url, supabase_key)
 DB_CONNECTION = os.environ.get("DB_CONNECTION")
 TABLE_NAME = os.environ.get("TABLE_NAME")
 vx = vecs.create_client(DB_CONNECTION)

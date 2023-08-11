@@ -9,8 +9,6 @@ from vecs.adapter import Adapter, TextEmbedding
 
 load_dotenv()
 
-supabase_url = os.environ.get("SUPABASE_URL")
-supabase_key = os.environ.get("SUPABASE_SERVICE_KEY")
 DB_CONNECTION = os.environ.get("DB_CONNECTION")
 TABLE_NAME = os.environ.get("TABLE_NAME")
 
