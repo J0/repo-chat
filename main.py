@@ -41,7 +41,7 @@ while True:
     if query.lower().strip() == "exit":
         print("\033[31mGoodbye!\n\033[0m")
         break
-
+    # Change the number of documents fetched according to your needs. Defaults to 7
     matched_docs = docs.query(data=query, include_metadata=True, limit=7)
     code_str = ""
 

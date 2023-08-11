@@ -1,6 +1,6 @@
 # Repo Chat
 
-Repo chat allows you to ask questions about a GitHub repository.
+Repo chat allows you to ask questions about a GitHub repository. This is a fork of [mckaywrigley's original repo](https://github.com/mckaywrigley/repo-chat). It uses the `vecs` adapter as well as Huggingface `supabase/gte-small` to generate embeddings. 
 
 ## Requirements
 
